@@ -2,6 +2,9 @@
 //
 
 #include "core.h"
+#include "Math/Math.h"
+#include "Math/Vector2.h"
+#include "Math/Random.h"
 #include <iostream>
 
 bool Update(float dt)
@@ -12,11 +15,12 @@ bool Update(float dt)
 void Draw(Core::Graphics& graphics)
 {
 	graphics.SetColor(RGB(rand() % 256, rand() % 256, rand() % 256));
-	graphics.DrawLine(static_cast<float>(rand() % 800), static_cast<float>(rand() % 600), static_cast<float>(rand() % 800), static_cast<float>(rand() % 600));
+	graphics.DrawLine(nc::random(0.0f, 800.0f), nc::random(0.0f, 600.0f), nc::random(0.0f, 800.0f), nc::random(0.0f, 600.0f));
 }
 
 int main()
 {
+
 	char name[] = "CSC196";
 	Core::Init(name, 800, 600);
 	Core::RegisterUpdateFn(Update);

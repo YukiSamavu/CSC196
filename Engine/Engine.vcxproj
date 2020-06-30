@@ -152,6 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Math\Math.h" />
+    <ClInclude Include="math\Random.h" />
+    <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
