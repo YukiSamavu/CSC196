@@ -10,8 +10,7 @@
 #include <iostream>
 #include <string>
 
-std::vector<nc::Vector2> points = { { -2, 3 }, { -3, 2 }, { -3, 1 }, { -1, -3 }, {1, -3 }, {3, 1}, {3,2}, {2,3}, {-2,3} };
-nc::Color color{ 1,0,0 };
+nc::Shape ship;
 
 nc::Vector2 position{ 400.0f, 300.0f };
 float scale = 5.0f;
@@ -32,7 +31,7 @@ bool Update(float dt)
 	roundTime += dt;
 	if (roundTime >= 5) gameOver = true ;
 	
-	if (gameOver) dt = 0;
+	if (gameOver) dt = -1;
 	//get delta time
 	DWORD time = GetTickCount();
 	deltaTime = time - prevTime;
@@ -61,13 +60,13 @@ bool Update(float dt)
 	if (position.y > 600.0f) { position.y = 0; }
 	if (position.y < 0.0f) { position.y = 600; }
 
-	if (Core::Input::IsPressed('A')) position += nc::Vector2::left * speed;
-	if (Core::Input::IsPressed('D')) position += nc::Vector2::right * speed;
-	if (Core::Input::IsPressed('S')) position += nc::Vector2::down * speed;
-	if (Core::Input::IsPressed('W')) position += nc::Vector2::up * speed;
+	//if (Core::Input::IsPressed('A')) position += nc::Vector2::left * speed;
+	//if (Core::Input::IsPressed('D')) position += nc::Vector2::right * speed;
+	//if (Core::Input::IsPressed('S')) position += nc::Vector2::down * speed;
+	//if (Core::Input::IsPressed('W')) position += nc::Vector2::up * speed;
 
-	//if (Core::Input::IsPressed('A')) angle -= dt * 2.0f;
-	//if (Core::Input::IsPressed('D')) angle += dt * 2.0f;
+	if (Core::Input::IsPressed('A')) angle -= dt * 2.0f;
+	if (Core::Input::IsPressed('D')) angle += dt * 2.0f;
 
 	return quit;
 }
@@ -79,28 +78,7 @@ void Draw(Core::Graphics& graphics)
 	graphics.DrawString(10, 30,std::to_string(deltaTime / 1000.0f).c_str());
 
 	if (gameOver) graphics.DrawString(400, 300, "Game Over!");
-	graphics.SetColor(color.pack888());
-
-	for (size_t i = 0; i < points.size() - 1; i++)
-	{
-
-		// local/object space points
-		nc::Vector2 p1 = (points[i]);
-		nc::Vector2 p2 = (points[i + 1]);
-
-		//transform
-		//scale
-		p1 = p1 * 5.0f;
-		p2 = p2 * 5.0f;
-		//rotate
-		p1 = nc::Vector2::Rotate(p1, 0.0f);
-		p2 = nc::Vector2::Rotate(p2, 0.0f);
-		//translate
-		p1 = p1 + position;
-		p2 = p2 + position;
-
-		graphics.DrawLine(p1.x, p1.y, p2.x, p2.y);
-	}
+	ship.Draw(graphics, position, scale, angle);
 
 }
 
@@ -108,6 +86,9 @@ int main()
 {
 	DWORD time = GetTickCount();
 	std::cout << time / 1000 / 60 / 60 / 24 << std::endl;
+
+	ship.Load("ship.txt");
+	ship.SetColor({ 1,1,1 });
 
 	char name[] = "Yuki's Game";
 	Core::Init(name, 800, 600, 90);

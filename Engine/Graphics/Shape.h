@@ -3,19 +3,23 @@
 #include "core.h"
 #include "Math/Color.h"
 #include "Math/Vector2.h"
+#include <vector>
+#include <string>
 
 namespace nc
 {
 	class Shape
 	{
 	public:
-		Shape();
+		Shape() {};
 		Shape(const std::vector<nc::Vector2>& points, const Color& color);
+
+		bool Load(const std::string& filenme);
 
 		void Draw(Core::Graphics& graphics, nc::Vector2 position, float scale = 1.0f, float angle = 0.0f);
 
-		void SetColor(Color color);
-		const Color& GetColor() const;
+		void SetColor(Color color) { m_color = color; }
+		const Color& GetColor() const { return m_color; }
 
 	private:
 		std::vector<nc::Vector2> m_points;
