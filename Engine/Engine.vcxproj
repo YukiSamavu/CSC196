@@ -160,13 +160,18 @@
     <ClInclude Include="Math\Color.h" />
     <ClInclude Include="Math\Math.h" />
     <ClInclude Include="math\Random.h" />
+    <ClInclude Include="Math\Transform.h" />
     <ClInclude Include="math\Vector2.h" />
+    <ClInclude Include="Object\Actor.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Graphics\Shape.cpp" />
+    <ClCompile Include="Math\Color.cpp" />
+    <ClCompile Include="Math\Transform.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Object\Actor.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
