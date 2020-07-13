@@ -7,26 +7,17 @@ namespace nc
     {
 		bool success = false;
 
-		std::ifstream stream(filename);
-		if (stream.is_open())
-		{
-			success = true;
+        std::ifstream stream(filename);
+        if (stream.is_open())
+        {
+            success = true;
 
-			//read color
-			stream >> m_color;
-			//read points
-			while (!stream.eof())
-			{
-				Vector2 point;
-				stream >> point;
+            stream >> m_transform;
+        }
 
-				if (!stream.eof())
-				{
-					m_points.push_back(point);
-				}
-			}
-			stream.close();
-		}
+        std::string shapename;
+        stream >> shapename;
+        m_shape.Load(shapename);
 
 		return success;
     }
@@ -37,7 +28,7 @@ namespace nc
 
     void Actor::Draw(Core::Graphics& graphics)
     {
-        // draw shape using transform
+        m_shape.Draw(graphics, m_transform);
     }
 
 }

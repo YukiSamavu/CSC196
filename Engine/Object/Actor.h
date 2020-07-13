@@ -11,14 +11,15 @@ namespace nc
 		Actor(const Transform& transform, const Shape& shape) : m_transform{ transform }, m_shape{ shape } {}// make sure to initialize m_transform and m_shape
 		~Actor() {}
 
-		bool Load(const std::string& filename);
+		virtual bool Load(const std::string& filename);
 
-		void Update(float dt);
+		virtual void Update(float dt);
 		void Draw(Core::Graphics& graphics);
 
-		Transform& GetTransform(); // return the transform
-		Shape& GetShape(); // return the shape
-	private:
+		Transform& GetTransform() { return m_transform; } // return the transform
+		Shape& GetShape() { return m_shape; } // return the shape
+
+	protected:
 		Transform m_transform;
 		Shape m_shape;
 	};

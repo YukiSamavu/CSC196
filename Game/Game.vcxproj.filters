@@ -9,10 +9,27 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Actors">
+      <UniqueIdentifier>{24693a9c-ad3a-49b9-92c4-d26df61c2f89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Actors\Player.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="Actors\Enemy.cpp">
+      <Filter>Actors</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Actors\Player.h">
+      <Filter>Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="Actors\Enemy.h">
+      <Filter>Actors</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
