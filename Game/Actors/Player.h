@@ -11,5 +11,6 @@ public:
 
 protected:
 	float m_thrust{ 200.0f };
+	float m_rotation{ 360.0f };
 	nc::Vector2 m_velocity;
 };

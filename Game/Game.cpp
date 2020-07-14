@@ -86,6 +86,7 @@ int main()
 
 	player.Load("Player.txt");
 	enemy.Load("Enemy.txt");
+	enemy.SetTarget(&player);
 
 	char name[] = "Yuki's Game";
 	Core::Init(name, 800, 600, 90);

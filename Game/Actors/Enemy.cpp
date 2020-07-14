@@ -4,21 +4,21 @@
 
 bool Enemy::Load(const std::string& filename)
 {
-    bool success = false;
+	bool success = false;
 
-    std::ifstream stream(filename);
-    if (stream.is_open())
-    {
-        success = true;
+	std::ifstream stream(filename);
+	if (stream.is_open())
+	{
+		success = true;
 
-        stream >> m_transform;
+		stream >> m_transform;
+	}
 
-        std::string shapename;
-        stream >> shapename;
-        m_shape.Load(shapename);
-    }
+	std::string shapename;
+	stream >> shapename;
+	m_shape.Load(shapename);
 
-    return success;
+	return success;
 }
 
 void Enemy::Update(float dt)
