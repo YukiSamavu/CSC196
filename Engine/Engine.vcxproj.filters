@@ -47,6 +47,9 @@
     <ClInclude Include="Math\Transform.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Math\Matrix22.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">

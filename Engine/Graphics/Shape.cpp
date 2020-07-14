@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Shape.h"
+#include "Math/Matrix22.h"
 #include <fstream>
 
 namespace nc
@@ -40,6 +41,15 @@ namespace nc
 	{
 		graphics.SetColor(m_color);
 
+		nc::Matrix22 mxScale;
+		mxScale.Scale(scale);
+
+		nc::Matrix22 mxRotate;
+		mxRotate.Rotate(angle);
+
+		nc::Matrix22 mx;
+		mx = mxScale * mxRotate;
+
 		for (size_t i = 0; i < m_points.size() - 1; i++)
 		{
 
@@ -47,13 +57,9 @@ namespace nc
 			nc::Vector2 p1 = (m_points[i]);
 			nc::Vector2 p2 = (m_points[i + 1]);
 
-			//transform
-			//scale
-			p1 = p1 * scale;
-			p2 = p2 * scale;
-			//rotate
-			p1 = nc::Vector2::Rotate(p1, angle);
-			p2 = nc::Vector2::Rotate(p2, angle);
+			//scale / rotate
+			p1 = p1 * mx;
+			p2 = p2 * mx;
 			//translate
 			p1 = p1 + position;
 			p2 = p2 + position;
