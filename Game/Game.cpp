@@ -1,6 +1,3 @@
-// Game.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "core.h"
 #include "Math/Math.h"
 #include "Math/Random.h"
@@ -12,48 +9,87 @@
 #include <string>
 #include <list>
 
-Player player;
 std::list<nc::Actor*> sceneActors;
 
-float speed = 300.0f;
-nc::Vector2 velocity;
-float thrust = 300.0f;
-
 float frameTime;
-float roundTime{ 0 };
-bool gameOver{ false };
+float spawnTimer{ 0 };
 
-float t{ 0 };
+template <typename T>
+nc::Actor* GetActor()
+{
+	nc::Actor* actor{ nullptr };
 
-DWORD prevTime;
-DWORD deltaTime;
+	for (nc::Actor* a : sceneActors)
+	{
+		actor = dynamic_cast<T*>(a);
+
+		if (actor != nullptr) break;
+	}
+
+	return actor;
+}
+
+template <typename T>
+std::vector<T*> GetActors()
+{
+	std::vector<T*> actors;
+
+	for (nc::Actor* a : sceneActors)
+	{
+		T* actor = dynamic_cast<T*>(a);
+		if (actor)
+		{
+			actors.push_back(actor);
+		}
+	}
+
+	return actors;
+}
+
+void RemoveActor(nc::Actor* actor)
+{
+	auto iter = std::find(sceneActors.begin(), sceneActors.end(), actor);
+	if (iter != sceneActors.end())
+	{
+		delete* iter;
+		sceneActors.erase(iter);
+	}
+}
 
 bool Update(float dt)
 {
 	frameTime = dt;
-	roundTime += dt;
-	//if (roundTime >= 5) gameOver = true ;
-	
-	//if (gameOver) dt = 0;
+	spawnTimer += dt;
+	if (spawnTimer >= 1.0f)
+	{
+		spawnTimer = 0.0f;
 
-	t = t + (dt * 1.0f);
+		Enemy* e = new Enemy;
+		e->Load("enemy.txt");
+		e->SetTarget(GetActor<Player>());
+		e->SetSpeed(nc::random(50, 100));
 
-	//get delta time
-	DWORD time = GetTickCount();
-	deltaTime = time - prevTime;
-	prevTime = time;
+		e->GetTransform().position = nc::Vector2{ nc::random(0,800), nc::random(0,600) };
+		sceneActors.push_back(e);
+	}
+
+	if (Core::Input::IsPressed(VK_SPACE))
+	{
+		auto enemies = GetActors<Enemy>();
+		for (Enemy* enemy : enemies)
+		{
+			RemoveActor(enemy);
+		}
+	}
 
 	bool quit = Core::Input::IsPressed(Core::Input::KEY_ESCAPE);
 
 	int x, y;
 	Core::Input::GetMousePos(x,y);
 
-	//Player
-	player.Update(dt);
-
-	for (Enemy* e : sceneActors)
+	for (nc::Actor* actor : sceneActors)
 	{
-		e->Update(dt);
+		actor->Update(dt);
 	}
 
 	return quit;
@@ -64,38 +100,25 @@ void Draw(Core::Graphics& graphics)
 	graphics.SetColor(nc::Color{ 1,1,1 });
 	graphics.DrawString(10, 10,std::to_string(frameTime).c_str());
 	graphics.DrawString(10, 20,std::to_string(1.0f / frameTime).c_str());
-	/*
-	graphics.DrawString(10, 30,std::to_string(deltaTime / 1000.0f).c_str());
 
-	float v = (std::sin(t) + 1.0f) * 0.5f;
-
-	nc::Color c = nc::Lerp(nc::Color{ 1,0,0 }, nc::Color{ .5,.25,1 }, v);
-	graphics.SetColor(c);
-	nc::Vector2 p = nc::Lerp(nc::Vector2{ 100, 200 }, nc::Vector2{ 500,200 }, v);
-	graphics.DrawString(p.x, p.y, "Here Comes The Grim Reaper");
-
-	if (gameOver) graphics.DrawString(400, 300, "Game Over!");
-	*/
-
-	player.Draw(graphics);
-
-	for (Enemy* e : sceneActors)
+	for (nc::Actor* actor : sceneActors)
 	{
-		e->Draw(graphics);
+		actor->Draw(graphics);
 	}
 }
 
 int main()
 {
-	player.Load("Player.txt");
-	enemy.SetTarget(&player);
+	Player* player = new Player;
+	player->Load("player.txt");
+	sceneActors.push_back(player);
 
 	for (size_t i = 0; i < 10; i++)
 	{
-		Enemy* e = new Enemy;
+		nc::Actor* e = new Enemy;
 		e->Load("enemy.txt");
-		e->SetTarget(&player);
-		e->SetSpeed(nc::random(50, 1000));
+		dynamic_cast<Enemy*>(e)->SetTarget(player);
+		dynamic_cast<Enemy*>(e)->SetSpeed(nc::random(50, 100));
 		e->GetTransform().position = nc::Vector2{ nc::random(0,800), nc::random(0,600) };
 		sceneActors.push_back(e);
 	}
