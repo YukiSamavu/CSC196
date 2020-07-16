@@ -24,7 +24,6 @@ bool Player::Load(const std::string& filename)
 void Player::Update(float dt)
 {
 	//Player
-
 	nc::Vector2 force;
 	if (Core::Input::IsPressed('W')) { force = nc::Vector2::forward * m_thrust; }
 
@@ -50,4 +49,7 @@ void Player::Update(float dt)
 
 	if (Core::Input::IsPressed('A')) { m_transform.angle = m_transform.angle - (nc::DegreeToRadians(m_rotation) * dt); }
 	if (Core::Input::IsPressed('D')) { m_transform.angle = m_transform.angle + (nc::DegreeToRadians(m_rotation) * dt); }
+
+	m_transform.Update();
+
 }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Shape.h"
 #include "Math/Matrix22.h"
+#include "Math/Matrix33.h"
 #include <fstream>
 
 namespace nc
@@ -41,14 +42,17 @@ namespace nc
 	{
 		graphics.SetColor(m_color);
 
-		nc::Matrix22 mxScale;
+		Matrix33 mxScale;
 		mxScale.Scale(scale);
 
-		nc::Matrix22 mxRotate;
+		Matrix33 mxRotate;
 		mxRotate.Rotate(angle);
 
-		nc::Matrix22 mx;
-		mx = mxScale * mxRotate;
+		Matrix33 mxTranslate;
+		mxTranslate.Translate(position);
+
+		nc::Matrix33 mx;
+		mx = mxScale * mxRotate * mxTranslate;
 
 		for (size_t i = 0; i < m_points.size() - 1; i++)
 		{
@@ -57,12 +61,9 @@ namespace nc
 			nc::Vector2 p1 = (m_points[i]);
 			nc::Vector2 p2 = (m_points[i + 1]);
 
-			//scale / rotate
+			//scale / rotate / translate
 			p1 = p1 * mx;
 			p2 = p2 * mx;
-			//translate
-			p1 = p1 + position;
-			p2 = p2 + position;
 
 			graphics.DrawLine(p1.x, p1.y, p2.x, p2.y);
 		}
@@ -70,6 +71,20 @@ namespace nc
 
 	void Shape::Draw(Core::Graphics& graphics, const Transform& transform)
 	{
-		Draw(graphics, transform.position, transform.scale, transform.angle);
+		graphics.SetColor(m_color);
+
+		for (size_t i = 0; i < m_points.size() - 1; i++)
+		{
+
+			// local/object space points
+			nc::Vector2 p1 = (m_points[i]);
+			nc::Vector2 p2 = (m_points[i + 1]);
+
+			//scale / rotate / translate
+			p1 = p1 * transform.matrix;
+			p2 = p2 * transform.matrix;
+
+			graphics.DrawLine(p1.x, p1.y, p2.x, p2.y);
+		}
 	}
 }

@@ -10,6 +10,7 @@ public:
 	virtual void Update(float dt) override;
 
 	void SetTarget(Actor* actor) { m_target = actor; }
+	void SetSpeed(float speed) { m_speed = speed; }
 
 protected:
 	float m_speed{ 200.0f };

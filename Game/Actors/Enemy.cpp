@@ -26,7 +26,9 @@ void Enemy::Update(float dt)
 	//Enemy
     nc::Vector2 direction = m_target->GetTransform().position - m_transform.position;
 	direction.Normalize();
-	nc::Vector2 enemyVelocity = direction * 100.0f;
+	nc::Vector2 enemyVelocity = direction * m_speed;
 	m_transform.position = m_transform.position + (enemyVelocity * dt);
 	m_transform.angle = std::atan2(direction.y, direction.x) + nc::DegreeToRadians(90.0f);
+
+	m_transform.Update();
 }

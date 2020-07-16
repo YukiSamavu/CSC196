@@ -10,12 +10,12 @@
 #include "Actors/Enemy.h"
 #include <iostream>
 #include <string>
+#include <list>
 
 Player player;
-Enemy enemy;
+std::list<nc::Actor*> sceneActors;
 
 float speed = 300.0f;
-
 nc::Vector2 velocity;
 float thrust = 300.0f;
 
@@ -51,8 +51,10 @@ bool Update(float dt)
 	//Player
 	player.Update(dt);
 
-	//Enemy
-	enemy.Update(dt);
+	for (Enemy* e : sceneActors)
+	{
+		e->Update(dt);
+	}
 
 	return quit;
 }
@@ -76,17 +78,27 @@ void Draw(Core::Graphics& graphics)
 	*/
 
 	player.Draw(graphics);
-	enemy.Draw(graphics);
+
+	for (Enemy* e : sceneActors)
+	{
+		e->Draw(graphics);
+	}
 }
 
 int main()
 {
-	DWORD time = GetTickCount();
-	std::cout << time / 1000 / 60 / 60 / 24 << std::endl;
-
 	player.Load("Player.txt");
-	enemy.Load("Enemy.txt");
 	enemy.SetTarget(&player);
+
+	for (size_t i = 0; i < 10; i++)
+	{
+		Enemy* e = new Enemy;
+		e->Load("enemy.txt");
+		e->SetTarget(&player);
+		e->SetSpeed(nc::random(50, 1000));
+		e->GetTransform().position = nc::Vector2{ nc::random(0,800), nc::random(0,600) };
+		sceneActors.push_back(e);
+	}
 
 	char name[] = "Yuki's Game";
 	Core::Init(name, 800, 600, 90);
