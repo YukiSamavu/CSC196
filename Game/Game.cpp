@@ -5,11 +5,12 @@
 #include "Object/Actor.h"
 #include "Actors/Player.h"
 #include "Actors/Enemy.h"
+#include "Object/Scene.h"
 #include <iostream>
 #include <string>
 #include <list>
 
-std::list<nc::Actor*> sceneActors;
+nc::Scene scene;
 
 float frameTime;
 float spawnTimer{ 0 };
@@ -46,21 +47,11 @@ std::vector<T*> GetActors()
 	return actors;
 }
 
-void RemoveActor(nc::Actor* actor)
-{
-	auto iter = std::find(sceneActors.begin(), sceneActors.end(), actor);
-	if (iter != sceneActors.end())
-	{
-		delete* iter;
-		sceneActors.erase(iter);
-	}
-}
-
 bool Update(float dt)
 {
 	frameTime = dt;
 	spawnTimer += dt;
-	if (spawnTimer >= 1.0f)
+	if (spawnTimer >= 3.0f)
 	{
 		spawnTimer = 0.0f;
 
@@ -70,7 +61,8 @@ bool Update(float dt)
 		e->SetSpeed(nc::random(50, 100));
 
 		e->GetTransform().position = nc::Vector2{ nc::random(0,800), nc::random(0,600) };
-		sceneActors.push_back(e);
+
+		scene.AddActor(e);
 	}
 
 	if (Core::Input::IsPressed(VK_SPACE))
@@ -78,7 +70,7 @@ bool Update(float dt)
 		auto enemies = GetActors<Enemy>();
 		for (Enemy* enemy : enemies)
 		{
-			RemoveActor(enemy);
+			scene.RemoveActor(enemy);
 		}
 	}
 
@@ -87,10 +79,7 @@ bool Update(float dt)
 	int x, y;
 	Core::Input::GetMousePos(x,y);
 
-	for (nc::Actor* actor : sceneActors)
-	{
-		actor->Update(dt);
-	}
+	scene.Update(dt);
 
 	return quit;
 }
@@ -101,17 +90,16 @@ void Draw(Core::Graphics& graphics)
 	graphics.DrawString(10, 10,std::to_string(frameTime).c_str());
 	graphics.DrawString(10, 20,std::to_string(1.0f / frameTime).c_str());
 
-	for (nc::Actor* actor : sceneActors)
-	{
-		actor->Draw(graphics);
-	}
+	scene.Draw(graphics);
 }
 
 int main()
 {
+	scene.Startup();
+
 	Player* player = new Player;
 	player->Load("player.txt");
-	sceneActors.push_back(player);
+	scene.AddActor(player);
 
 	for (size_t i = 0; i < 10; i++)
 	{
@@ -120,13 +108,15 @@ int main()
 		dynamic_cast<Enemy*>(e)->SetTarget(player);
 		dynamic_cast<Enemy*>(e)->SetSpeed(nc::random(50, 100));
 		e->GetTransform().position = nc::Vector2{ nc::random(0,800), nc::random(0,600) };
-		sceneActors.push_back(e);
+		scene.AddActor(e);
 	}
 
 	char name[] = "Yuki's Game";
 	Core::Init(name, 800, 600, 90);
 	Core::RegisterUpdateFn(Update);
 	Core::RegisterDrawFn(Draw);
+
+	scene.Shutdown();
 
 	Core::GameLoop();
 	Core::Shutdown();
