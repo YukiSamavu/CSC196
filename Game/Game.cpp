@@ -15,6 +15,7 @@ nc::Scene scene;
 float frameTime;
 float spawnTimer{ 0 };
 
+/*
 template <typename T>
 nc::Actor* GetActor()
 {
@@ -46,11 +47,14 @@ std::vector<T*> GetActors()
 
 	return actors;
 }
+*/
 
 bool Update(float dt)
 {
 	frameTime = dt;
 	spawnTimer += dt;
+
+	/*
 	if (spawnTimer >= 3.0f)
 	{
 		spawnTimer = 0.0f;
@@ -64,7 +68,9 @@ bool Update(float dt)
 
 		scene.AddActor(e);
 	}
+	*/
 
+	/*
 	if (Core::Input::IsPressed(VK_SPACE))
 	{
 		auto enemies = GetActors<Enemy>();
@@ -73,6 +79,7 @@ bool Update(float dt)
 			scene.RemoveActor(enemy);
 		}
 	}
+	*/
 
 	bool quit = Core::Input::IsPressed(Core::Input::KEY_ESCAPE);
 

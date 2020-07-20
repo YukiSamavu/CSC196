@@ -21,7 +21,7 @@ namespace nc
 		{
 			nc::Actor* actor{ nullptr };
 
-			for (nc::Actor* a : sceneActors)
+			for (nc::Actor* a : actor)
 			{
 				actor = dynamic_cast<T*>(a);
 
@@ -32,7 +32,20 @@ namespace nc
 		}
 
 		template <typename T>
-		std::vector<T*> GetActors() {}
+		std::vector<T*> GetActors()
+		{
+			std::vector<T*> actors;
+			for (Actor* a : m_actors)
+			{
+				T* actor = dynamic_cast<T*>(a);
+				if (actor)
+				{
+					actors.push_back(actor);
+				}
+			}
+
+			return actors;
+		}
 
 	private:
 		std::list<class Actor*> m_actors;

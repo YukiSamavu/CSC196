@@ -23,12 +23,19 @@ bool Enemy::Load(const std::string& filename)
 
 void Enemy::Update(float dt)
 {
-	//Enemy
     nc::Vector2 direction = m_target->GetTransform().position - m_transform.position;
 	direction.Normalize();
-	nc::Vector2 enemyVelocity = direction * m_speed;
-	m_transform.position = m_transform.position + (enemyVelocity * dt);
+	nc::Vector2 Velocity = direction * m_speed;
+	//m_transform.position = m_transform.position + (Velocity * dt);
 	m_transform.angle = std::atan2(direction.y, direction.x) + nc::DegreeToRadians(90.0f);
 
 	m_transform.Update();
+}
+
+void Enemy::OnCollision(Actor* actor)
+{
+	if (actor->GetType() == eType::PROJECTILE)
+	{
+		m_destroy = true;
+	}
 }
