@@ -72,11 +72,13 @@ namespace nc
 
 	void Scene::RemoveActor(Actor* actor)
 	{
+		/*
 		std::list<Actor*>::iterator iter = std::find(m_actors.begin(), m_actors.end(), actor);
 		if (iter != m_actors.end())
 		{
 			delete* iter;
 			m_actors.erase(iter);
 		}
+		*/
 	}
 }

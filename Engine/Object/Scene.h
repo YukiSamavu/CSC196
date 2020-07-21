@@ -19,9 +19,9 @@ namespace nc
 		template <typename T>
 		T* GetActor() 
 		{
-			nc::Actor* actor{ nullptr };
+			T* actor{ nullptr };
 
-			for (nc::Actor* a : actor)
+			for (nc::Actor* a : m_actors)
 			{
 				actor = dynamic_cast<T*>(a);
 

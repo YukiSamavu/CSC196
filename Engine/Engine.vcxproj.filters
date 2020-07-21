@@ -56,6 +56,12 @@
     <ClInclude Include="Object\Scene.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="Graphics\Particles.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics\PartilcesSystem.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -81,6 +87,9 @@
     </ClCompile>
     <ClCompile Include="Object\Scene.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics\PartilcesSystem.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

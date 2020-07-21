@@ -156,6 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="Graphics\Particles.h" />
+    <ClInclude Include="Graphics\PartilcesSystem.h" />
     <ClInclude Include="Graphics\Shape.h" />
     <ClInclude Include="Math\Color.h" />
     <ClInclude Include="Math\Math.h" />
@@ -170,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Graphics\PartilcesSystem.cpp" />
     <ClCompile Include="Graphics\Shape.cpp" />
     <ClCompile Include="Math\Color.cpp" />
     <ClCompile Include="Math\Transform.cpp" />
