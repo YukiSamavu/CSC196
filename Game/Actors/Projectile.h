@@ -17,4 +17,5 @@ public:
 
 protected:
 	float m_speed{ 200.0f };
+	float m_lifetime{ 2 };
 };

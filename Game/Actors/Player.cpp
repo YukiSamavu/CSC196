@@ -2,6 +2,8 @@
 #include "Math/Math.h"
 #include "Projectile.h"
 #include "Object/Scene.h"
+#include "Graphics/PartilcesSystem.h"
+#include "Math/Random.h"
 #include <fstream>
 
 bool Player::Load(const std::string& filename)
@@ -65,6 +67,11 @@ void Player::Update(float dt)
 
 	if (Core::Input::IsPressed('A')) { m_transform.angle = m_transform.angle - (nc::DegreeToRadians(m_rotation) * dt); }
 	if (Core::Input::IsPressed('D')) { m_transform.angle = m_transform.angle + (nc::DegreeToRadians(m_rotation) * dt); }
+
+	if (force.LengthSqr() > 0)
+	{
+		g_particlesSystem.Create(m_transform.position, m_transform.angle + nc::PI, 20, 1, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
+	}
 
 	m_transform.Update();
 
