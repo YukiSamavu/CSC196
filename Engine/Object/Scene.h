@@ -1,7 +1,10 @@
 #pragma once
+#include "pch.h"
 #include "core.h"
 #include <vector>
 #include <list>
+
+class Game;
 
 namespace nc
 {
@@ -16,6 +19,7 @@ namespace nc
 
 		void AddActor(class Actor* actor);
 		void RemoveActor(class Actor* object);
+		void RemoveAllActors();
 
 		template <typename T>
 		T* GetActor() 
@@ -48,7 +52,11 @@ namespace nc
 			return actors;
 		}
 
+		void SetGame(Game* game) { m_game = game; }
+		Game* GetGame() { return m_game; }
+
 	private:
+		Game* m_game;
 		std::list<class Actor*> m_actors;
 	};
 }

@@ -10,11 +10,7 @@ namespace nc
 
 	void Scene::Shutdown()
 	{
-		for (nc::Actor* actor : m_actors)
-		{
-			delete(actor);
-		}
-		m_actors.clear();
+		RemoveAllActors();
 	}
 
 	void Scene::Update(float dt)
@@ -80,5 +76,14 @@ namespace nc
 			m_actors.erase(iter);
 		}
 		*/
+	}
+	void Scene::RemoveAllActors()
+	{
+		for (nc::Actor* actor : m_actors)
+		{
+			delete(actor);
+		}
+
+		m_actors.clear();
 	}
 }
