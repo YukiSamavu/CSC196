@@ -1,0 +1,4 @@
+{200,150}
+2
+0
+SatanShape.txt

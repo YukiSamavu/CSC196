@@ -5,6 +5,7 @@
 #include "Actors/Player.h"
 #include "Actors/Enemy.h"
 #include "Graphics/PartilcesSystem.h"
+#include "Audio/AudioSystem.h"
 #include <iostream>
 #include <string>
 
@@ -13,7 +14,9 @@ void Game::Initialize()
 	// start engine
 	m_scene.Startup();
 	m_scene.SetGame(this);
-	g_particlesSystem.Startup();
+	g_audioSystem.AddAudio("Laser", "Laser.wav");
+	g_audioSystem.AddAudio("Explosion", "Explosion.wav");
+	g_audioSystem.AddAudio("BG", "BackGroundMusic.wav");
 }
 
 bool Game::Update(float dt)
@@ -28,6 +31,7 @@ bool Game::Update(float dt)
 		if (Core::Input::IsPressed(VK_SPACE))
 		{
 			m_state = eState::INIT_GAME;
+			g_audioSystem.PlayAudio("BG");
 		}
 		break;
 	case::Game::eState::INIT_GAME:
@@ -73,6 +77,20 @@ bool Game::Update(float dt)
 		}
 
 		m_scene.Update(dt);
+
+		/*
+		if (m_score == 10)
+		{
+			Enemy* e = new Enemy;
+			e->Load("Satan.txt");
+			e->SetTarget(m_scene.GetActor<Player>());
+			e->SetSpeed(150);
+
+			e->GetTransform().position = nc::Vector2{ 400, 300 };
+
+			m_scene.AddActor(e);
+		}
+		*/
 	}
 		break;
 	case Game::eState::GAME_OVER:
@@ -96,6 +114,7 @@ bool Game::Update(float dt)
 		g_particlesSystem.Create({x,y}, 0, 180, 2500, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
 	}
 
+	g_audioSystem.Update(dt);
 	g_particlesSystem.Update(dt);
 
 	return quit;

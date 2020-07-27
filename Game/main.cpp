@@ -1,6 +1,8 @@
 #include "core.h"
 #include "Game.h"
 #include <time.h>
+#include "Graphics/PartilcesSystem.h"
+#include "Audio/AudioSystem.h"
 
 Game game;
 
@@ -18,6 +20,9 @@ void Draw(Core::Graphics& graphics)
 
 int main()
 {
+	g_particlesSystem.Startup();
+	g_audioSystem.Startup();
+
 	srand(static_cast<unsigned int>(time(NULL)));
 	game.Initialize();
 
@@ -30,7 +35,8 @@ int main()
 	Core::Shutdown();
 
 	// shutdown engine
-	//g_particlesSystem.Shutdown();
+	g_audioSystem.Shutdown();
+	g_particlesSystem.Shutdown();
 	//scene.Shutdown();
 };
 

@@ -4,6 +4,7 @@
 #include "Math/Random.h"
 #include "Object/Scene.h"
 #include "../Game.h"
+#include "Audio/AudioSystem.h"
 #include <fstream>
 
 bool Enemy::Load(const std::string& filename)
@@ -43,8 +44,10 @@ void Enemy::OnCollision(Actor* actor)
 		m_destroy = true;
 
 		// set game points/score
-		m_scene->GetGame()->AddPoints(10);
+		m_scene->GetGame()->AddPoints(1);
 
 		g_particlesSystem.Create(m_transform.position, m_transform.angle + nc::PI, 180, 2500, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
+
+		g_audioSystem.PlayAudio("Explosion");
 	}
 }

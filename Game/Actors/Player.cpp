@@ -5,6 +5,7 @@
 #include "Graphics/PartilcesSystem.h"
 #include "Math/Random.h"
 #include "../Game.h"
+#include "Audio/AudioSystem.h"
 #include <fstream>
 
 bool Player::Load(const std::string& filename)
@@ -33,6 +34,7 @@ void Player::Update(float dt)
 	if (Core::Input::IsPressed(VK_SPACE) && m_fireTimer >= m_fireRate)
 	{
 		m_fireTimer = 0;
+		g_audioSystem.PlayAudio("Laser");
 
 		Projectile* projectile = new Projectile;
 		projectile->Load("projectile.txt");
