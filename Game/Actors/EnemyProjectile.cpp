@@ -1,10 +1,10 @@
-#include "Projectile.h"
+#include "EnemyProjectile.h"
 #include "Math/Math.h"
 #include "Graphics/PartilcesSystem.h"
 #include "Math/Random.h"
 #include <fstream>
 
-bool Projectile::Load(const std::string& filename)
+bool EnemyProjectile::Load(const std::string& filename)
 {
 	bool success = false;
 
@@ -23,7 +23,7 @@ bool Projectile::Load(const std::string& filename)
 	return success;
 }
 
-void Projectile::Update(float dt)
+void EnemyProjectile::Update(float dt)
 {
 	m_lifetime -= dt;
 	if (m_lifetime <= 0)
@@ -40,9 +40,9 @@ void Projectile::Update(float dt)
 	m_transform.Update();
 }
 
-void Projectile::OnCollision(Actor* actor)
+void EnemyProjectile::OnCollision(Actor* actor)
 {
-	if (actor->GetType() == eType::ENEMY)
+	if (actor->GetType() == eType::PLAYER || actor->GetType() == eType::PLAYER_PROJECTILE)
 	{
 		m_destroy = true;
 	}

@@ -1,12 +1,12 @@
 #pragma once
 #include "Object/Actor.h"
 
-class Projectile : public nc::Actor
+class EnemyProjectile : public nc::Actor
 {
 public:
-	Projectile() {}
+	EnemyProjectile() {}
 
-	virtual eType GetType() override { return eType::PROJECTILE; }
+	virtual eType GetType() override { return eType::ENEMY_PROJECTILE; }
 
 	virtual bool Load(const std::string& filename) override;
 	virtual void Update(float dt) override;
@@ -19,3 +19,4 @@ protected:
 	float m_speed{ 200.0f };
 	float m_lifetime{ 2 };
 };
+

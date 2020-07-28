@@ -14,7 +14,10 @@ public:
 	virtual void OnCollision(Actor* actor) override;
 
 protected:
+	float m_speedTimer{ 0 };
+	float m_boostTime{ 10 };
 	float m_thrust{ 200.0f };
+
 	float m_rotation{ 360.0f };
 
 	float m_fireRate{ 0.2f };
@@ -23,4 +26,5 @@ protected:
 	bool m_prevButtonPress{ false };
 	
 	nc::Vector2 m_velocity;
+	float m_angularVelocity{ 0 };
 };

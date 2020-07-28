@@ -13,13 +13,20 @@ namespace nc
 		{
 			PLAYER,
 			ENEMY,
-			PROJECTILE
+			BOSS,
+			PLAYER_PROJECTILE,
+			ENEMY_PROJECTILE,
+			ONEUP,
+			SPEEDBOOST,
+			LOCATOR
 		};
 
 	public:
 		Actor() {}
 		Actor(const Transform& transform, const Shape& shape) : m_transform{ transform }, m_shape{ shape } {}// make sure to initialize m_transform and m_shape
 		~Actor() {}
+
+		virtual void Destroy();
 
 		virtual eType GetType() = 0;
 
@@ -37,10 +44,16 @@ namespace nc
 		Transform& GetTransform() { return m_transform; } // return the transform
 		Shape& GetShape() { return m_shape; } // return the shape
 
+		Actor* GetParent() { return m_parent; }
+		void AddChild(Actor* child);
+
 	protected:
 		bool m_destroy{ false };
 		Scene* m_scene{ nullptr };
 		Transform m_transform;
 		Shape m_shape;
+
+		Actor* m_parent{ nullptr };
+		std::vector<Actor*> m_children;
 	};
 }

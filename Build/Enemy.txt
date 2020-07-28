@@ -1,4 +1,4 @@
 {200,150}
-5
+4
 0
 EnemyShape.txt

@@ -1,6 +1,7 @@
 #include "Player.h"
+#include "Enemy.h"
 #include "Math/Math.h"
-#include "Projectile.h"
+#include "PlayerProjectile.h"
 #include "Object/Scene.h"
 #include "Graphics/PartilcesSystem.h"
 #include "Math/Random.h"
@@ -30,18 +31,25 @@ bool Player::Load(const std::string& filename)
 void Player::Update(float dt)
 {
 	m_fireTimer += dt;
+	m_speedTimer += dt;
 
 	if (Core::Input::IsPressed(VK_SPACE) && m_fireTimer >= m_fireRate)
 	{
 		m_fireTimer = 0;
 		g_audioSystem.PlayAudio("Laser");
 
-		Projectile* projectile = new Projectile;
+		PlayerProjectile* projectile = new PlayerProjectile;
 		projectile->Load("projectile.txt");
-		projectile->GetTransform().position = m_transform.position;
+		projectile->GetTransform().position = m_transform.position + nc::Vector2{0,-15};
 		projectile->GetTransform().angle = m_transform.angle;
 
 		m_scene->AddActor(projectile);
+	}
+
+	if (m_speedTimer >= m_boostTime)
+	{
+		m_speedTimer = 0;
+		m_thrust = 200;
 	}
 
 	//Player
@@ -68,12 +76,24 @@ void Player::Update(float dt)
 	if (m_transform.position.y > 600.0f) { m_transform.position.y = 0; }
 	if (m_transform.position.y < 0.0f) { m_transform.position.y = 600; }
 
-	if (Core::Input::IsPressed('A')) { m_transform.angle = m_transform.angle - (nc::DegreeToRadians(m_rotation) * dt); }
-	if (Core::Input::IsPressed('D')) { m_transform.angle = m_transform.angle + (nc::DegreeToRadians(m_rotation) * dt); }
+	//rotations
+	float torque{ 0 };
+	if (Core::Input::IsPressed('A')) torque = -20.0f;
+	if (Core::Input::IsPressed('D')) torque = 20.0f;
+
+	m_angularVelocity = m_angularVelocity + (torque * dt);
+	m_angularVelocity = m_angularVelocity * 0.97f;
+	m_transform.angle = m_transform.angle + (m_angularVelocity * dt);
 
 	if (force.LengthSqr() > 0)
 	{
-		g_particlesSystem.Create(m_transform.position, m_transform.angle + nc::PI, 20, 1, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
+		Actor* child = m_children[0];
+
+		g_particlesSystem.Create(child->GetTransform().matrix.GetPosition(), child->GetTransform().matrix.GetAngle() + nc::PI, 20, 1, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
+
+		child = m_children[1];
+
+		g_particlesSystem.Create(child->GetTransform().matrix.GetPosition(), child->GetTransform().matrix.GetAngle() + nc::PI, 20, 1, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
 	}
 
 	if (Core::Input::IsPressed('Q') && !m_prevButtonPress)
@@ -85,13 +105,35 @@ void Player::Update(float dt)
 
 	m_transform.Update();
 
+	// update children
+	for (auto child : m_children)
+	{
+		child->Update(dt);
+	}
 }
 
 void Player::OnCollision(Actor* actor)
 {
-	if (actor->GetType() == eType::ENEMY)
+	if (!m_destroy && (actor->GetType() == eType::ENEMY || actor->GetType() == eType::ENEMY_PROJECTILE))
 	{
-		//m_destroy = true;
-		m_scene->GetGame()->SetState(Game::eState::GAME_OVER);
+		m_destroy = true;
+
+		//Set Target to null
+		auto enemies = m_scene->GetActors<Enemy>();
+		for (auto enemy : enemies)
+		{
+			enemy->SetTarget(nullptr);
+		}
+
+		g_particlesSystem.Create(m_transform.position, m_transform.angle + nc::PI, 180, 2500, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
+
+		g_audioSystem.PlayAudio("Explosion");
+
+		m_scene->GetGame()->SetState(Game::eState::PLAYER_DEAD);
+	}
+
+	if (actor->GetType() == eType::SPEEDBOOST)
+	{
+		m_thrust = 400;
 	}
 }

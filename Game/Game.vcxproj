@@ -156,16 +156,26 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Actors\Boss.cpp" />
     <ClCompile Include="Actors\Enemy.cpp" />
+    <ClCompile Include="Actors\EnemyProjectile.cpp" />
+    <ClCompile Include="Actors\Locator.cpp" />
     <ClCompile Include="Actors\Player.cpp" />
-    <ClCompile Include="Actors\Projectile.cpp" />
+    <ClCompile Include="Actors\OneUp.cpp" />
+    <ClCompile Include="Actors\PlayerProjectile.cpp" />
+    <ClCompile Include="Actors\SpeedBoost.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actors\Boss.h" />
     <ClInclude Include="Actors\Enemy.h" />
+    <ClInclude Include="Actors\EnemyProjectile.h" />
+    <ClInclude Include="Actors\Locator.h" />
     <ClInclude Include="Actors\Player.h" />
-    <ClInclude Include="Actors\Projectile.h" />
+    <ClInclude Include="Actors\OneUp.h" />
+    <ClInclude Include="Actors\PlayerProjectile.h" />
+    <ClInclude Include="Actors\SpeedBoost.h" />
     <ClInclude Include="Game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
