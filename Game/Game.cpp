@@ -79,6 +79,22 @@ bool Game::Update(float dt)
 			float angle = nc::random(0, nc::TWO_PI);
 			nc::Vector2 position = nc::Vector2::Rotate({0.0f,distance}, angle);
 			e->GetTransform().position = m_scene.GetActor<Player>()->GetTransform().position + position;
+			if (e->GetTransform().position.x > 800)
+			{
+				e->GetTransform().position.x = 800;
+			}
+			else if (e->GetTransform().position.x < 0)
+			{
+				e->GetTransform().position.x = 0;
+			}
+			if (e->GetTransform().position.y > 600)
+			{
+				e->GetTransform().position.y = 600;
+			}
+			else if (e->GetTransform().position.y < 0)
+			{
+				e->GetTransform().position.y = 0;
+			}
 			e->SetFireRate(nc::random(5.0f, 10.0f));
 			m_scene.AddActor(e);
 		}
@@ -102,6 +118,22 @@ bool Game::Update(float dt)
 			float angle = nc::random(0, nc::TWO_PI);
 			nc::Vector2 position = nc::Vector2::Rotate({ 0.0f,distance }, angle);
 			e->GetTransform().position = m_scene.GetActor<Player>()->GetTransform().position + position;
+			if (e->GetTransform().position.x > 800)
+			{
+				e->GetTransform().position.x = 800;
+			}
+			else if (e->GetTransform().position.x < 0)
+			{
+				e->GetTransform().position.x = 0;
+			}
+			if (e->GetTransform().position.y > 600)
+			{
+				e->GetTransform().position.y = 600;
+			}
+			else if (e->GetTransform().position.y < 0)
+			{
+				e->GetTransform().position.y = 0;
+			}
 			e->SetFireRate(nc::random(5.0f, 10.0f));
 
 			m_scene.AddActor(e);

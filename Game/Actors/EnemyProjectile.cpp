@@ -44,6 +44,8 @@ void EnemyProjectile::OnCollision(Actor* actor)
 {
 	if (actor->GetType() == eType::PLAYER || actor->GetType() == eType::PLAYER_PROJECTILE)
 	{
+		g_particlesSystem.Create(m_transform.position, m_transform.angle + nc::PI, 180, 100, 1, nc::Color{ nc::random(0,1),nc::random(0,1),nc::random(0,1) }, 100, 200);
+
 		m_destroy = true;
 	}
 }

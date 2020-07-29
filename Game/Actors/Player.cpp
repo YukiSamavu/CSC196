@@ -40,7 +40,7 @@ void Player::Update(float dt)
 
 		PlayerProjectile* projectile = new PlayerProjectile;
 		projectile->Load("projectile.txt");
-		projectile->GetTransform().position = m_transform.position + nc::Vector2{0,-15};
+		projectile->GetTransform().position = m_transform.position;
 		projectile->GetTransform().angle = m_transform.angle;
 
 		m_scene->AddActor(projectile);
